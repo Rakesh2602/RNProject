@@ -1,15 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
-import {CounterProvider} from './src/context/ContextApi';
-
+import { AuthProvider } from './src/context/AuthContext';
 const App = () => {
   return (
-    <CounterProvider>
+    <AuthProvider>
       <NavigationContainer>
         <StackNavigator />
       </NavigationContainer>
-    </CounterProvider>
+    </AuthProvider>
   );
 };
 

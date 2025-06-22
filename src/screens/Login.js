@@ -8,11 +8,20 @@ import {
   Image,
   Button,
 } from 'react-native';
-import React, { useState } from 'react';
-
-const Login = () => {
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+const Login = ({navigation}) => {
   const [email, SetEmail] = useState('');
   const [password, SetPassword] = useState('');
+
+  const { loginWithGoogle,appleLogin } = useContext(AuthContext);
+
+  const HandleLoginWithGoogle = async () => {
+    const success = await loginWithGoogle(); 
+    if (success) {
+      navigation.navigate('HomeScreen');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,14 +62,14 @@ const Login = () => {
           }}
         >
           <TouchableOpacity>
-            <Text style={{fontSize:16}}>Remember me</Text>
+            <Text style={{ fontSize: 16 }}>Remember me</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={{fontSize:16,color:'red'}}>Forgot password?</Text>
+            <Text style={{ fontSize: 16, color: 'red' }}>Forgot password?</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={{fontSize:18,fontWeight:'bold'}}>Login</Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Login</Text>
         </TouchableOpacity>
         <View style={styles.borderMainView}>
           <View style={{ flex: 1, height: 1, backgroundColor: 'lightgrey' }} />
@@ -68,14 +77,16 @@ const Login = () => {
           <View style={{ flex: 1, height: 1, backgroundColor: 'lightgrey' }} />
         </View>
         <View style={styles.socialLoginsView}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => HandleLoginWithGoogle()}>
             <Image
               source={require('../assets/googleIcon.png')}
               resizeMode="contain"
               style={styles.googleIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => appleLogin()}
+          >
             <Image
               source={require('../assets/appleIcon.png')}
               resizeMode="contain"
@@ -97,11 +108,20 @@ const Login = () => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row',marginTop:30,justifyContent:'center'}}>
-        <Text style={{fontSize:16}}>Don't have an account?</Text>
-        <TouchableOpacity>
-            <Text style={{fontSize:18,fontWeight:'bold',color:'red'}}> Signup</Text>
-        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 30,
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ fontSize: 16 }}>Don't have an account?</Text>
+          <TouchableOpacity>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'red' }}>
+              {' '}
+              Signup
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -122,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     paddingLeft: 30,
     borderRadius: 20,
-   fontSize:16
+    fontSize: 16,
   },
   borderMainView: {
     flexDirection: 'row',
@@ -145,9 +165,9 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'skyblue',
     marginHorizontal: 10,
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:40,
-    marginTop:30
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
+    marginTop: 30,
   },
 });

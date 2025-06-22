@@ -1,4 +1,5 @@
 # Resolve react_native_pods.rb with node to allow for hoisting
+$FirebaseSDKVersion = '11.13.0'
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
@@ -16,7 +17,8 @@ end
 
 target 'RNProject' do
   config = use_native_modules!
-
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
